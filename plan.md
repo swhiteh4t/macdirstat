@@ -1,7 +1,7 @@
 # MacDirStat — Plan de implementación
 
 **Aplicación:** analizador de espacio en disco para macOS, inspirado en GrandPerspective y WinDirStat.
-**Repositorio:** `/Users/sergiovalle/Documents/Proyectos/macdirstat`
+**Repositorio:** raíz de este proyecto (local; ver `README.md`)
 **Versión del plan:** 1.0 — 2026-10-17
 **Estado:** plan aprobado; **no hay código implementado todavía**. Este documento es el contrato de ejecución.
 

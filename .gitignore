@@ -7,3 +7,23 @@ dist/
 *.spec.bak
 benchmarks/tmp/
 .DS_Store
+._*
+
+# ---------------------------------------------------------------- datos sensibles
+# El manifiesto del organizador contiene rutas y nombres reales del equipo.
+organization*.jsonl
+organizer-manifest*.jsonl
+*.organizer.jsonl
+# Depuración de la IA: puede incluir nombres de archivos reales.
+ai-logs/
+organizer-logs/
+logs/
+*.log
+# Credenciales y secretos (MacDirStat no necesita ninguno: todo es local).
+.env
+.env.*
+secrets/
+*.pem
+# Zonas de pruebas manuales del organizador.
+sandbox/
+scratch/
