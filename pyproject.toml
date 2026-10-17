@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "macdirstat"
+version = "1.0.0"
+description = "Analizador de espacio en disco para macOS con treemap interactivo"
+readme = "README.md"
+requires-python = ">=3.12,<3.15"
+license = { text = "MIT" }
+authors = [{ name = "Sergio Valle" }]
+dependencies = ["PySide6==6.10.3"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "pytest-qt==4.5.0",
+    "pyinstaller==6.22.3",
+]
+
+[project.scripts]
+macdirstat = "main:main"
+
+[tool.setuptools]
+packages = ["app", "app.models", "app.scanner", "app.workers", "app.treemap", "app.views", "app.services"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -m 'not slow and not macos_integration'"
+markers = [
+    "slow: benchmarks y pruebas de carga (no se ejecutan por defecto)",
+    "macos_integration: toca APIs nativas de macOS (Papelera)",
+]
+filterwarnings = ["ignore::DeprecationWarning:PySide6.*"]
