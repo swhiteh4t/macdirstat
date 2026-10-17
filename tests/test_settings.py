@@ -18,7 +18,7 @@ def test_defaults(tmp_path):
     manager = make_manager(tmp_path)
     assert manager.last_folder == ""
     assert manager.theme == "system"
-    assert manager.size_metric is SizeMetric.LOGICAL
+    assert manager.size_metric is SizeMetric.ALLOCATED
     assert manager.treemap_mode is TreemapMode.SUBTREE
     assert manager.show_hidden is True
     assert manager.show_zero is True
@@ -72,7 +72,7 @@ def test_invalid_values_fall_back(tmp_path):
     settings.sync()
     manager = SettingsManager(settings)
     assert manager.theme == "system"
-    assert manager.size_metric is SizeMetric.LOGICAL
+    assert manager.size_metric is SizeMetric.ALLOCATED
     assert manager.treemap_mode is TreemapMode.SUBTREE
     assert manager.top_n == 100
     assert manager.view_mode == "map"

@@ -51,11 +51,11 @@ class SettingsManager:
 
     @property
     def size_metric(self) -> SizeMetric:
-        raw = str(self._settings.value("size_metric", SizeMetric.LOGICAL.value, type=str) or "")
+        raw = str(self._settings.value("size_metric", SizeMetric.ALLOCATED.value, type=str) or "")
         try:
             return SizeMetric(raw)
         except ValueError:
-            return SizeMetric.LOGICAL
+            return SizeMetric.ALLOCATED
 
     @size_metric.setter
     def size_metric(self, value: SizeMetric) -> None:

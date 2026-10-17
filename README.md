@@ -106,6 +106,9 @@ geometría entre ejecuciones (`QSettings`).
 | Espacio asignado (est.) | `st_blocks × 512` | Compresión y clones lo distorsionan |
 | Asignado único (est.) | Igual, deduplicando `(dev, ino)` | Solo enlaces duros; no detecta clones APFS |
 
+El mapa, los porcentajes y los totales usan por defecto el **espacio asignado**
+(el que los datos ocupan realmente en disco); el tamaño lógico y el asignado
+único siguen disponibles desde *Ver → Métrica* (⌘⌥1/2/3).
 Clones APFS y snapshots no pueden atribuirse con precisión: la app no resta
 estimaciones ni promete el «espacio recuperable exacto». Detalle y casos
 (carpetas comprimidas, dispersas, paquetes, TCC…) en
@@ -147,14 +150,16 @@ caso → prueba y los casos sintéticos del treemap están en
 
 | Medición | Valor | Objetivo del plan |
 |---|---|---|
-| Escaneo completo (0 errores) | 0.554 s | — |
-| Progreso visible | cada ≤ 0.101 s | ≤ 200 ms |
-| Cancelación | latencia 0.008 s | perceptible |
-| Layout subárbol ~10 000 fichas | 0.068 s | p95 ≤ 300 ms |
-| Repintado ~5 000 fichas (n=60) | p95 12.6 ms | p95 ≤ 16 ms |
-| Memoria 100 000 nodos | +49.4 MB (pico total 202.9 MB) | ≤ 300 MB |
+| Escaneo completo (0 errores) | 1.264 s (0.55–0.69 s en ejecuciones previas) | — |
+| Progreso visible | cada ≤ 0.102 s | ≤ 200 ms |
+| Cancelación | latencia 0.017 s | perceptible |
+| Layout subárbol ~10 000 fichas | 0.075 s | p95 ≤ 300 ms |
+| Repintado ~4 200 fichas (n=60) | p95 11.5 ms | p95 ≤ 16 ms |
+| Memoria 100 000 nodos | +49.5 MB (pico total 200.6 MB) | ≤ 300 MB |
 
-Detalles, comandos y notas de metodología en [docs/testing.md](docs/testing.md).
+La gráfica y los porcentajes se calculan por defecto con el **espacio asignado
+real en disco** (`st_blocks × 512`), no con el tamaño lógico. Detalles,
+comandos y notas de metodología en [docs/testing.md](docs/testing.md).
 
 ## 9. Empaquetado
 

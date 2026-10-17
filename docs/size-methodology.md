@@ -13,7 +13,8 @@ los casos específicos de macOS.
 | **Asignado único (est.)** | Igual, deduplicando `(dev, ino)` | Asignado contando enlaces duros una vez | Solo enlaces duros; no detecta clones APFS |
 | **Total / disponible del volumen** | `os.statvfs` (`f_blocks`, `f_bavail`, `f_frsize`) | Contexto del volumen analizado | macOS/APFS puede reportar distinto de lo liberable |
 
-La métrica de visualización por defecto es la **lógica**; se cambia desde el
+La métrica de visualización por defecto es el **espacio asignado** (`st_blocks × 512`),
+el espacio real que los datos ocupan en disco; se cambia desde el
 menú *Ver → Métrica* (⌘⌥1/2/3) y afecta al treemap, al árbol, a Mayores y a
 los porcentajes. Los totales del directorio se recalculan de forma coherente
 con la métrica activa (lo que cambia es cuánto aporta cada nodo al total).

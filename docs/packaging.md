@@ -53,7 +53,7 @@ esperadas. Pasos internos:
 | Info.plist | `plutil -extract LSMinimumSystemVersion raw …` | `13.0` |
 | Alta resolución | `plutil -extract NSHighResolutionCapable raw …` | `true` |
 | Bundle ID | `plutil -extract CFBundleIdentifier raw …` | `com.sergiovalle.macdirstat` |
-| Versión | `plutil -extract CFBundleShortVersionString raw …` | `1.0.0` |
+| Versión | `plutil -extract CFBundleShortVersionString raw …` | `1.0.1` |
 | Firma | `codesign -dv dist/MacDirStat.app` | `Signature=adhoc`; `codesign --verify --deep --strict` OK |
 | Tamaño | `du -sh dist/MacDirStat.app` | 96 MB |
 | Arranque + escaneo + captura | binario con `--scan /tmp/macdirstat-fixture --screenshot …` | exit 0, PNG correcto |

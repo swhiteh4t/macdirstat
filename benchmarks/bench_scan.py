@@ -369,7 +369,7 @@ def main(argv: list[str] | None = None) -> int:
 
     snapshot_started = time.monotonic()
     snapshot = FilterEngine().build_snapshot(
-        result, FilterState(), SizeMetric.LOGICAL, revision=1
+        result, FilterState(), SizeMetric.ALLOCATED, revision=1
     )
     if snapshot is None:
         raise RuntimeError("No se pudo construir el snapshot del filtro")

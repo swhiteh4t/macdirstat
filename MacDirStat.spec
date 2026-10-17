@@ -8,7 +8,7 @@ ejecuta las pruebas rápidas, genera el icono y verifica arquitectura/firma.
 from pathlib import Path
 
 ROOT = Path(SPECPATH)
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 BUNDLE_ID = "com.sergiovalle.macdirstat"
 
 # La app carga el icono con QIcon desde `resources/icons/app.svg`; en modo

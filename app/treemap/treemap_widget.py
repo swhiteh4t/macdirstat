@@ -78,7 +78,7 @@ class TreemapWidget(QWidget):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self._snapshot: FilterSnapshot | None = None
-        self._metric = SizeMetric.LOGICAL
+        self._metric = SizeMetric.ALLOCATED
         self._view_root: FileNode | None = None
         self._mode = TreemapMode.CHILDREN
         self._min_tile_area = 6.0

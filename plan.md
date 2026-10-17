@@ -81,8 +81,8 @@ Se almacenan y muestran por separado:
 
 | Métrica | Cálculo | Uso |
 |---|---|---|
-| Lógico | `st_size` | Métrica de visualización y porcentajes por defecto |
-| Asignado | `st_blocks * 512` | Estimación del espacio asignado; se muestra en detalles |
+| Lógico | `st_size` | Métrica alternativa (tamaño declarado, no ocupado) |
+| Asignado | `st_blocks * 512` | **Métrica de visualización y porcentajes por defecto** (espacio real en disco) |
 | Asignado único | Asignado, contando cada inodo una sola vez | Estimación con deduplicación de enlaces duros |
 | Volumen | `os.statvfs`: total y disponible | Contexto; **no** se suma al análisis |
 
@@ -799,7 +799,7 @@ Python 3.13.3, PySide6 6.10.3, pytest 9.1.1, pytest-qt 4.5.0, PyInstaller 6.22.3
 
 | Fecha | Entorno | Fixture | Escaneo | Layout | RSS | Resultado |
 |---|---|---|---|---|---|---|
-| 2026-10-17 | macOS 26.6.2 arm64, 10 CPUs | `benchmarks/tmp/fixture-100000` (100 000 archivos, 100 carpetas, 163.7 MB lógicos, semilla 20261017) | 0.554 s, 0 errores, progreso cada ≤ 0.101 s, cancelación en 0.008 s | subárbol completo 0.202 s (60 000 fichas, truncado); ~10 000 fichas 0.068 s; nivel actual ≈ 0 s | +49.4 MB tras escanear; pico total 202.9 MB | Objetivos cumplidos; repintado p95 12.6 ms con 4 994 fichas (n=60) |
+| 2026-10-17 | macOS 26.6.2 arm64, 10 CPUs | `benchmarks/tmp/fixture-100000` (100 000 archivos, 100 carpetas, 163.7 MB lógicos, semilla 20261017) | 1.264 s (0.55–0.69 s en ejecuciones previas), 0 errores, progreso cada ≤ 0.102 s, cancelación en 0.017 s | subárbol completo 0.195 s (60 000 fichas, truncado); ~10 000 fichas (9 110) 0.075 s; nivel actual ≈ 0 s | +49.5 MB tras escanear; pico total 200.6 MB | Objetivos cumplidos; repintado p95 11.5 ms con 4 218 fichas (n=60); métrica por defecto: espacio asignado |
 
 Pruebas:
 

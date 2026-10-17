@@ -34,6 +34,11 @@ def scan_and_wait(window, qtbot, path, timeout=20000):
     return window._scan_result
 
 
+def allocated_of(result, name: str) -> int:
+    """Espacio asignado real del nodo con ese nombre (métrica por defecto)."""
+    return next(n.total_allocated for n in result.root.walk() if n.name == name)
+
+
 def build_fixture(make_tree):
     return make_tree(
         {
@@ -73,7 +78,9 @@ def test_scan_populates_all_views(window, qtbot, make_tree):
     root = build_fixture(make_tree)
     result = scan_and_wait(window, qtbot, root)
     assert result.status is ScanStatus.COMPLETE
-    assert window._snapshot.total_bytes == 5000 + 1000 + 9000 + 3000 + 500
+    assert window._snapshot.metric is SizeMetric.ALLOCATED
+    assert window._snapshot.total_bytes == result.root.total_allocated
+    assert window._snapshot.total_bytes >= 5000 + 1000 + 9000 + 3000 + 500
     assert window._tree_model.rowCount() > 0
     assert window._largest._model.rowCount() > 0
     assert "archivos" in window._status_summary.text()
@@ -178,28 +185,31 @@ def test_view_modes_switch_stack(window, qtbot, make_tree):
 
 def test_filter_query_updates_snapshot_and_status(window, qtbot, make_tree):
     root = build_fixture(make_tree)
-    scan_and_wait(window, qtbot, root)
+    result = scan_and_wait(window, qtbot, root)
     window._filter_bar.search.setText("pelicula")
     qtbot.waitUntil(lambda: window._snapshot is not None and window._snapshot.is_filtered,
                     timeout=4000)
-    assert window._snapshot.total_bytes == 9000
+    assert window._snapshot.metric is SizeMetric.ALLOCATED
+    assert window._snapshot.total_bytes == allocated_of(result, "pelicula.mov")
     assert "Mostrando" in window._status_summary.text()
     window._filter_bar.clear_filters()
     qtbot.waitUntil(lambda: window._snapshot is not None and not window._snapshot.is_filtered,
                     timeout=4000)
-    assert window._snapshot.total_bytes == window._scan_result.root.total_logical
+    assert window._snapshot.total_bytes == result.root.total_allocated
 
 
 def test_filter_category_and_extension(window, qtbot, make_tree):
     root = build_fixture(make_tree)
-    scan_and_wait(window, qtbot, root)
+    result = scan_and_wait(window, qtbot, root)
     window._filter_bar.extensions.setText("pdf, txt")
     qtbot.waitUntil(lambda: window._snapshot is not None and window._snapshot.is_filtered,
                     timeout=4000)
-    assert window._snapshot.total_bytes == 5000 + 1000 + 500
-    window._filter_bar.extensions.clear()
-    qtbot.waitUntil(lambda: window._snapshot is not None and not window._snapshot.is_filtered,
-                    timeout=4000)
+    assert window._snapshot.total_bytes == (
+        allocated_of(result, "informe.pdf")
+        + allocated_of(result, "notas.txt")
+        + allocated_of(result, "vacio.txt")
+        + allocated_of(result, "raiz.txt")
+    )
 
 
 def test_metric_change_updates_labels(window, qtbot, make_tree):

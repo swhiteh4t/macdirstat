@@ -130,37 +130,38 @@ integración) y la firma/notarización con Developer ID (ver `packaging.md`).
 
 ## 5. Benchmarks reales (fixture de 100 000 archivos)
 
-- **Fecha:** 2026-10-17 19:31
+- **Fecha:** 2026-10-17 19:52
 - **Entorno:** macOS 26.6.2 (arm64), 10 CPUs, Python 3.13.3, PySide6 6.10.3
 - **Fixture:** `benchmarks/tmp/fixture-100000` — 100 000 archivos en 100
   carpetas, 163.7 MB lógicos (19 969 de 0 bytes), semilla `20261017`,
   creado en 6.642 s
+- **Métrica:** espacio asignado (`st_blocks × 512`), la métrica por defecto
 - **Comandos:** `python benchmarks/make_fixture.py --files 100000` y
   `python benchmarks/bench_scan.py --fixture benchmarks/tmp/fixture-100000 --paint 60`
 
 | Medición | Valor |
 |---|---|
-| Escaneo (100 000 archivos, 0 errores) | 0.554 s |
-| Progreso | 7 eventos, intervalo máximo 0.101 s |
-| Cancelación (solicitada a los 0.25 s) | latencia 0.008 s |
-| Snapshot de filtros (identidad) | 0.033 s |
-| Layout subárbol completo | 0.202 s, 60 000 fichas (truncado al límite, 13 462 agregadas) |
-| Layout subárbol ~10 000 fichas | 0.068 s, 9 999 fichas |
+| Escaneo (100 000 archivos, 0 errores) | 1.264 s (otras ejecuciones del mismo fixture: 0.55–0.69 s; variación de caché/carga) |
+| Progreso | 14 eventos, intervalo máximo 0.102 s |
+| Cancelación (solicitada a los 0.25 s) | latencia 0.017 s |
+| Snapshot de filtros (identidad) | 0.034 s |
+| Layout subárbol completo | 0.195 s, 60 000 fichas (truncado al límite de fichas) |
+| Layout subárbol ~10 000 fichas | 0.075 s, 9 110 fichas |
 | Layout nivel actual | 0.000 s, 100 fichas |
-| RSS tras escanear (base 24.7 MB) | 74.1 MB (Δ 49.4 MB) |
-| RSS máximo total (pico con layout+repintado) | 202.9 MB |
-| Repintado 60 000 fichas (offscreen, n=60) | media 60.3 ms, p95 62.3 ms |
-| Repintado 4 994 fichas (offscreen, n=60) | media 12.1 ms, **p95 12.6 ms** |
+| RSS tras escanear (base 24.7 MB) | 74.2 MB (Δ 49.5 MB) |
+| RSS máximo total (pico con layout+repintado) | 200.6 MB |
+| Repintado 60 000 fichas (offscreen, n=60) | media 58.2 ms, p95 59.3 ms |
+| Repintado 4 218 fichas (offscreen, n=60) | media 11.2 ms, **p95 11.5 ms** |
 
 Contraste con los objetivos del plan:
 
 | Objetivo | Objetivos del plan | Medido | Estado |
 |---|---|---|---|
-| Progreso visible cada | ≤ 200 ms | 101 ms máx. | ✅ |
-| Layout 10 000 fichas | p95 ≤ 300 ms | 68 ms (mínimo de 3 ejecuciones) | ✅ |
-| Repintado 5 000 fichas | p95 ≤ 16 ms | 12.6 ms (n=60) | ✅ |
-| Memoria 100 000 nodos | ≤ 300 MB adicionales | +49.4 MB tras escaneo | ✅ |
-| Cancelación perceptible | — | 8 ms | ✅ |
+| Progreso visible cada | ≤ 200 ms | 102 ms máx. | ✅ |
+| Layout 10 000 fichas | p95 ≤ 300 ms | 75 ms (mínimo de 3 ejecuciones) | ✅ |
+| Repintado 5 000 fichas | p95 ≤ 16 ms | 11.5 ms (n=60) | ✅ |
+| Memoria 100 000 nodos | ≤ 300 MB adicionales | +49.5 MB tras escaneo | ✅ |
+| Cancelación perceptible | — | 17 ms | ✅ |
 
 Los informes crudos se regeneran en `benchmarks/tmp/bench-scan.md` y
 `benchmarks/tmp/bench-scan.json` (no versionados). Notas de honestidad:
@@ -168,7 +169,7 @@ Los informes crudos se regeneran en `benchmarks/tmp/bench-scan.md` y
 - El repintado se midió con `QWidget.render()` sobre un `QPixmap` persistente
   con plataforma `offscreen`; no incluye composición de ventana en pantalla.
 - El repintado con el umbral por defecto de este fixture concreto genera
-  60 000 fichas y tarda ~60 ms; la app ofrece el ajuste «Ficha mín.» para
+  60 000 fichas y tarda ~59 ms; la app ofrece el ajuste «Ficha mín.» para
   reducirlas. La agregación por superficie es configurable precisamente por
   esto.
 - Los tiempos son de una máquina concreta; no se extrapolan a otros equipos.
